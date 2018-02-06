@@ -70,3 +70,51 @@ function alter(arr, dash, ...callback){
     }
   });
 }
+
+/**
+  * 统计arr中各值占百分比
+  * @param {Array} arr 待统计数组
+  * @param {String} [type='percent'] 输出值类型，percent表示百分比，decimal表示小数。
+  * bug: 不能设置精确度
+  */
+function countPercent(arr, type = 'percent'){
+  if(!Array.isArray(arr)){
+    throw new TypeError('参数必须是数组');
+  }
+
+  let sum;
+
+  sum = arr.reduce((pre, val, index, arr)=>{
+    if(isNaN(Number(val))){
+      throw new TypeError('数组值必须为数字类型');
+    }
+    return pre += Number(val);
+  }, 0);
+
+  return arr.map((val, index, arr)=>{
+    return type === 'decimal' ? Number(val)/sum : Math.round( Number(val)/sum*100 );
+  });
+}
+
+/**
+  * 统计arr在count规定的区间中的分布情况
+  * @param {Array} arr 数据数组
+  * @param {Array} intervals 区间数组,数组最后必须为Infinity
+  * @param {Object}
+  */
+function count(arr, intervals){
+  let obj = {};
+
+  arr.forEach((val, index, arr)=>{
+    let v = Number(val);
+
+    for(let i = 1, len = intervals.length; i<len; i++){
+      if(v>=intervals[i-1] && v<intervals[i]){
+        obj[intervals[i-1]+'-'+intervals[i]] ? obj[intervals[i-1]+'-'+intervals[i]]++ : obj[intervals[i-1]+'-'+intervals[i]] = 1 ;
+        break;
+      }
+
+    }
+  });
+  return obj;
+}
