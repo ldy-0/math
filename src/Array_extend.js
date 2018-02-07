@@ -118,3 +118,11 @@ function count(arr, intervals){
   });
   return obj;
 }
+
+module.exports = {
+  average,
+  cumulate,
+  alter,
+  count,
+  countPercent,
+};
