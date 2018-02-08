@@ -1,3 +1,5 @@
+
+
 /**
   * 数组求平均值
   *   1. 省略count参数，表示求sum数组的平均数
@@ -25,9 +27,10 @@ function average(arr, count, start = 0){
   }
 
   return arr.map((val, index, arr)=>{
-    return index >= start ? (val !== 0 ? val/count[index] : 0) : val ;
-  });;
+    return index >= start ? (val !== 0 ? val/count[index] : '') : val ;
+  });
 }
+
 
 /**
   * 数组累加
@@ -47,6 +50,7 @@ function cumulate(arr, sum, count, start = 0){
     sum[index] = index>=start ? sum[index] + Number(val) : val ;
   });
 }
+
 
 /**
   * 不同位置使用不同方式修改数组值
@@ -70,6 +74,7 @@ function alter(arr, dash, ...callback){
     }
   });
 }
+
 
 /**
   * 统计arr中各值占百分比
@@ -96,6 +101,7 @@ function countPercent(arr, type = 'percent'){
   });
 }
 
+
 /**
   * 统计arr在count规定的区间中的分布情况
   * @param {Array} arr 数据数组
@@ -119,6 +125,9 @@ function count(arr, intervals){
   return obj;
 }
 
+
+/*******************************************/
+/*******************************************/
 module.exports = {
   average,
   cumulate,
