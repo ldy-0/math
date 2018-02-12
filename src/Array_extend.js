@@ -8,6 +8,7 @@
   * @param {Array} [count] 每个值的次数
   * @param {Number} [start=0] 数组中求平均值的起始位置
   * @return {Array}
+  * bug: 求列平均未测试
   */
 function average(arr, count, start = 0){
   if(!Array.isArray(arr)){
@@ -20,7 +21,7 @@ function average(arr, count, start = 0){
         leaglLength = arr.length;
 
     for(let i = 0, len = leaglLength; i<len; i++){
-      typeof arr[i] === 'number' ? ave += arr[i] : leaglLength-- ;
+      typeof arr[i] === 'number' && !isNaN(arr[i]) ? ave += arr[i] : leaglLength-- ;
     }
 
     return ave/leaglLength;
