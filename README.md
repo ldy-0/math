@@ -1,7 +1,8 @@
-# extend
-一个方便使用JavaScript进行数据处理的小型扩展库。
+# math
+提供一些简单数学计算方法的JavaScript库。
 
-## Get extend
+## Get math
+`git clone https://github.com/person-0/math.git`
 ## Docs
 
 ## Listen
