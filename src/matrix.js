@@ -13,39 +13,78 @@
 	 
  } */
  const Matrix = {};
-
+ 
+/**
+ * compute matrix average
+ * 求矩阵平均值
+ * @param {Array} matrix
+ * @param {String} [type='global'] 求平均值的类型
+ * @param {Integer} [start=0] 数组中求平均值的起始位置
+ * @return {Number|Array}
+ * 1.matrix=[1,2] or type='global' return Number
+ * 2.type='row' or type='column' return Array
+ */
+ Matrix.average = function(matrix, type = 'global', start = 0){
+	 if(!Array.isArray(matrix)){
+		 throw new TypeError('argument type is illeagl');
+	 }
+	 
+	 if(!Array.isArray(matrix[0])){
+		 return average(matrix, Number.isInteger(start) ? start : Math.round(start));
+	 }
+	 
+	 let len = matrix.length;
+	 //FIXME: 判断矩阵列是否一致
+	 if(len){
+		 //FIXME: 
+	 }
+	 
+	 switch(type){
+		 case 'row':
+			 return matrix.map((v, i, a)=>average(v));
+		 case 'column':
+			 return columnAverage();
+		 case 'global':
+			 return matrix.reduce((p, v, i, a)=>p+average(v), 0)/len;
+		 default :
+			 throw new RangeError('type value must be row|column|global');
+	 }
+	 
+	 function columnAverage(){
+		 let sum_arr = [];
+		 matrix[0].forEach((val, index, arr)=>{
+			 matrix.forEach((v, i, a)=>{
+				 i === 0 ? sum_arr[index] = v[index] : sum_arr[index] += v[index];
+			 });
+			 sum_arr[index] /= matrix.length;
+		 })
+		 return sum_arr;
+	 }
+	 
+ }
+ 
+ 
 /**
  * compute array average
  * 数组求平均值
- *   1.省略count参数，表示求arr数组的平均数
- *   2.有count参数且为数组，表示求arr中每个值的平均数arr[i]/count[i]
  * @param {Array} arr 待求数组
- * @param {Array} [count] 对应arr中每个值的次数
  * @param {Number} [start=0] 数组中求平均值的起始位置
- * @return {Array}
- * TODO: 求列平均未测试
+ * @return {Number}
  */
-Matrix.average = function(arr, count, start = 0){
-  if(!Array.isArray(arr)){
-		throw new TypeError('第一个参数必须为数组');
+function average(arr, start = 0){
+  if(!Array.isArray(arr) && Number.isInteger(start)){
+		throw new TypeError('argument type is illeagl');
   }
 
-  // compute array average 求数组平均值
-  if(!Array.isArray(count)){
-    let sum = 0,
-				s = Number.isInteger(count) ? count : (Number.isInteger(start) ? start : 0 ), 
-        leaglLength = arr.length - s;
+	let sum = 0, 
+			leaglLength = arr.length - start;
 
-    for(let i = s, len = arr.length; i<len; i++){
-      typeof arr[i] === 'number' && !isNaN(arr[i]) ? sum += arr[i] : leaglLength-- ;
-    }
+	for(let i = start, len = arr.length; i<len; i++){
+		typeof arr[i] === 'number' && !isNaN(arr[i]) ? sum += arr[i] : leaglLength-- ;
+	}
 
-    return sum/leaglLength;
-  }
+	return sum/leaglLength;
 
-  return arr.map((val, index, arr)=>{
-    return index >= start ? (val !== 0 ? val/count[index] : '') : val ;
-  });
 }
 
 
@@ -67,6 +106,13 @@ function cumulate(arr, sum, count, start = 0){
     sum[index] = index>=start ? sum[index] + Number(val) : val ;
   });
 }
+
+/**
+ * 数组除法
+ */
+ function divide(arr, count){
+	 
+ }
 
 
 /**
