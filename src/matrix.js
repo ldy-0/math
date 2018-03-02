@@ -34,10 +34,7 @@
 	 }
 	 
 	 let len = matrix.length;
-	 //FIXME: 判断矩阵列是否一致
-	 if(len){
-		 //FIXME: 
-	 }
+	 Matrix.normalize(matrix);
 	 
 	 switch(type){
 		 case 'row':
@@ -51,17 +48,54 @@
 	 }
 	 
 	 function columnAverage(){
-		 let sum_arr = [];
+		 let sum_arr = new Array(matrix[0].length).fill(0);
 		 matrix[0].forEach((val, index, arr)=>{
+			 let count = 0;
 			 matrix.forEach((v, i, a)=>{
-				 i === 0 ? sum_arr[index] = v[index] : sum_arr[index] += v[index];
+				 //i === 0 ? sum_arr[index] = v[index] : sum_arr[index] += v[index];
+				 typeof v[index] !== 'number' || isNaN(v[index]) ? count++ : sum_arr[index] += v[index] ;
 			 });
-			 sum_arr[index] /= matrix.length;
+			 sum_arr[index] /= (matrix.length-count);
 		 })
 		 return sum_arr;
 	 }
 	 
  }
+ 
+ 
+/**
+ * matrix normalize [ [1], [1,2] ] -> [ [1,0], [1,2] ]
+ * 矩阵标准化
+ * @param {Array} matrix
+ */
+ Matrix.normalize = function(matrix){
+	 let max_len = 0;
+	 
+	 for(let i = matrix.length-1; i>=0; i--){
+		 let val = matrix[i];
+		 
+		 if(typeof matrix === 'number'){
+			 maxtrix[i] = [val];
+		 }
+		 
+		 if(!Array.isArray(val)){
+			 matrix.splice(i, 1);
+		 }
+		 
+		 max_len = matrix[i].length >= max_len ? matrix[i].length : max_len;
+	 };
+	 //fix matrix
+	 matrix.forEach((val, index, arr)=>{
+		 for(let i = val.length; i<max_len; i++){
+			 val[i] = null;
+		 }
+	 });
+ }
+ 
+ 
+/**
+ * 
+ */
  
  
 /**

@@ -6,28 +6,45 @@ const average = Matrix.average;
 describe('Matrix', ()=>{
 	
 	describe('# Matrix.average', ()=>{
-		it('should return 22 when value is [11, 22, 33]', ()=>{
+		it('average([11,22,33]) should return 22', ()=>{
 			assert.equal(average([11,22,33]), 22);
 		});
-		it('should return 2 when value is [\'a\', 1, 2, 3],1', ()=>{
+		it('average([\'a\', 1, 2, 3], 1) should return 2', ()=>{
 			assert.equal(average(['a', 1, 2, 3], 1), 2);
 		});
-		it('should return 2 when value is ["a", 1, 2, 3], "a", 1', ()=>{
+		it('average([1, 2, 3, 4], \'a\', 1) should return 2 ', ()=>{
 			assert.equal(average([1, 2, 3, 4], 'a', 1), 3);
 		});
 		//row average
-		it('should return [22, 5] when value is [[22, 22, 22],[2, 2, 11]]', ()=>{
+		it('average([[22, 22, 22], [2, 2, 11]], \'row\') should return [22, 5]', ()=>{
 			assert.deepEqual(average([ [22, 22, 22], [2, 2, 11] ], 'row'), [22, 5]);
 		});
 		//global average
-		it('should return 11.5 when value is [[22, 22, 22], [2, 2, 11]]', ()=>{
+		it('average([ [22, 22, 22], [2, 1, 0] ]) should return 11.5', ()=>{
 			assert.equal(average([ [22, 22, 22], [2, 1, 0] ]), 11.5);
 		});
 		//column average
-		it('should return [1.5,2.5,3.5,4.5] when value is [ [1,2,3,4], [2,3,4,5] ]', ()=>{
+		it('average([ [1,2,3,4], [2,3,4,5] ], \'column\') should return [1.5,2.5,3.5,4.5] ', ()=>{
 			assert.deepEqual(average([ [1,2,3,4], [2,3,4,5] ], 'column'), [1.5,2.5,3.5,4.5]);
+		});
+		it('average([ [1,2,3,4], [2,3,4,5] ], \'column\') should return [1.5,2.5,3.5,4.5] ', ()=>{
+			assert.deepEqual(average([ [1,2,3,4], [2,3,4] ], 'column'), [1.5,2.5,3.5,4]);
 		});
 		
 	});
 
+	
+	describe('# Matrix.normalize', ()=>{
+		let matrix = [[1,2], [1,2,3,4], [], 'aaaaaa', [1,2,3,4,5]  ];
+		
+		Matrix.normalize(matrix);
+		
+		it('matrix is [ [1, 2, null, null, null ],[1, 2, 3, 4, null ],[null, null, null, null, null ],[1, 2, 3, 4, 5 ] ]', 
+		()=>assert.deepEqual(matrix, [ [1, 2, null, null, null ],
+																	 [1, 2, 3, 4, null ],
+																	 [null, null, null, null, null ],
+																	 [1, 2, 3, 4, 5 ] ]) ); 
+	});
+	
+	
 });
