@@ -86,9 +86,7 @@
 	 };
 	 //fix matrix
 	 matrix.forEach((val, index, arr)=>{
-		 for(let i = val.length; i<max_len; i++){
-			 val[i] = null;
-		 }
+		 for(let i = val.length; i<max_len; val[i++] = null) /* empty */;
 	 });
  }
  
@@ -123,31 +121,67 @@ function average(arr, start = 0){
 
 
 /**
- * 数组累加
- * @param {Array} arr 将累加的数组
- * @param {Array} sum 之前累积总量
- * @param {Array} count 每个值的累加次数
+ * 矩阵累加
+ * @param {Array} martix 待加矩阵
+ * @param {Array} arr 做加数的数组
+ * @param {String} [type='global'] 相加类型
  * @param {Number} [start=0] 数组中参与累加的起始位置
  * bug: 没有检查参数合法性
  */
-function cumulate(arr, sum, count, start = 0){
-  arr.forEach((val, index, arr)=>{
-    if(val === ''){
-      return ;
-    }
-
-    count[index]++;
-    sum[index] = index>=start ? sum[index] + Number(val) : val ;
-  });
+Matrix.cumulate = function(matrix, arr, type = 'global', start = 0){
+  //TODO:
+	return dispatchOperate(type, rowCumulate, columnCumulate);
+	//row cumulate handle
+	function rowCumulate(){
+		if(matrix[0].length !== arr.length){
+			throw new RangeError('array length !== matrix row length');
+		}
+		
+		return matrix.map((row, index, a)=>row.map((v, i)=>v+arr[i]) );
+	}
+	//column cumulate handle
+	function columnCumulate(){
+		if(matrix.length !== arr.length){
+			throw new RangeError('matrix column length !== array length');
+		}
+		
+		return matrix.map((row, index, a)=>row.map((v, i)=>v+arr[index]) );
+	}
+	
 }
 
+
 /**
- * 数组除法
+ * FIXME: 数组除法
  */
  function divide(arr, count){
-	 
+	 //FIXME:  matrix divide
  }
 
+/**
+ * dispatch Operate
+ * 分发操作
+ * @param {String} type
+ * @param {Function} rowOperate
+ * @param {Function} columnOperate
+ */
+ function dispatchOperate(type, rowOperate, columnOperate, globalOperate){
+	 if(!typeof rowOperate === 'function' && 
+				!typeof columnOperate === 'function'){
+		 throw new TypeError('argument type is illeagl');
+	 }
+	 
+	 switch(type){
+		case 'row':
+			return rowOperate();
+		case 'column':
+			return columnOperate();
+		case 'global':
+			return globalOperate();
+		default :
+			throw new RangeError('type value must be row|column|global');
+	 }
+ }
 
 /**
  * 不同位置使用不同方式修改数组值

@@ -2,6 +2,7 @@ const assert = require('assert');
 const Matrix = require('../src/matrix');
 
 const average = Matrix.average;
+const cumulate = Matrix.cumulate;
 
 describe('Matrix', ()=>{
 	
@@ -46,5 +47,17 @@ describe('Matrix', ()=>{
 																	 [1, 2, 3, 4, 5 ] ]) ); 
 	});
 	
+	
+	describe('# Matrix.cumulate', ()=>{
+		let matrix = [ [1,2], [2,3] ];
+		//row
+		it('cumulate([[1,2], [2,3]], [1,2], \'column\') should return [ [ 2, 4 ], [ 3, 5 ] ]', ()=>{
+				assert.deepEqual(cumulate(matrix, [1,2], 'row'), [[2, 4], [3, 5]]);
+		});
+		//column
+		it('cumulate([[1,2], [2,3]], [1,2], \'column\') should return [[2, 3], [4, 5]]', ()=>{
+				assert.deepEqual(cumulate(matrix, [1,2], 'column'), [[2, 3], [4, 5]]);
+		});
+	});
 	
 });
