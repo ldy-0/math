@@ -36,13 +36,14 @@ describe('Matrix', ()=>{
 
 	
 	describe('# Matrix.normalize', ()=>{
-		let matrix = [[1,2], [1,2,3,4], [], 'aaaaaa', [1,2,3,4,5]  ];
+		let matrix = [[1,2], [1,2,3,4], 5, [], 'aaaaaa', [1,2,3,4,5]  ];
 		
 		Matrix.normalize(matrix);
 		
 		it('matrix is [ [1, 2, null, null, null ],[1, 2, 3, 4, null ],[null, null, null, null, null ],[1, 2, 3, 4, 5 ] ]', 
 		()=>assert.deepEqual(matrix, [ [1, 2, null, null, null ],
 																	 [1, 2, 3, 4, null ],
+																	 [5, null, null, null, null],
 																	 [null, null, null, null, null ],
 																	 [1, 2, 3, 4, 5 ] ]) ); 
 	});
