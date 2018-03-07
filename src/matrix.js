@@ -6,6 +6,7 @@
  'use strict';
  
 /**
+ * FIXME: 函数式
  * @constructor Matrix
  */
  /* function Matrix(){
@@ -104,16 +105,18 @@
  * bug: 没有检查参数合法性
  */
 Matrix.cumulate = function(matrix, arr, type = 'global', start = 0){
-  //TODO:
+  
 	return dispatchOperate(type, 
 									//row cumulate handle
-									function(){return matrix.map((v)=>cumulate(v, arr));}, columnCumulate);
+									function(){return matrix.map((v)=>cumulate(v, arr));}, columnCumulate,
+									//global cumulate handle
+									function(){return matrix.map((v, i)=>cumulate(v, arr[i]));});
 	
 	
 	//column cumulate handle
 	function columnCumulate(){
 		if(matrix.length !== arr.length){
-			throw new RangeError('matrix column length !== array length');
+			throw new RangeError('The length of the two array must be the same ');
 		}
 		
 		return matrix.map((row, index, a)=>row.map((v, i)=>v+arr[index]) );
@@ -155,17 +158,23 @@ function average(arr, start = 0){
  * @inner
  */
  function cumulate(main_arr, add_arr){
-	 if(!Array.isArray(main_arr) || !Array.isArray(add_arr)){
-		 throw new TypeError('The parameter type must be an Array');
-	 }
-	 
-	 if(main_arr.length !== add_arr.length){
-		 throw new RangeError('The length of the two array must be the same');
-	 }
-	 //TODO: 判断数组元素
-	 return main_arr.map((val, index, arr)=>val+add_arr[index]);
+	 return arithmetic(main_arr, add_arr, (val, index)=>val+add_arr[index]);
  }
-//console.log(cumulate([1,2,3], [1,2,3]));
+
+ 
+/**
+ * FIXME:array minus
+ * 数组减运算
+ * @param {Array} main_arr
+ * @param {Array} minus_arr
+ * @return {Array}
+ * @inner
+ */
+ function minus(main_arr, minus_arr){
+	 return arithmetic(main_arr, minus_arr, (val, index)=>val-minus_arr[index]);
+ }
+ //console.log(minus([1,2,3], [1,2,2]));
+
 
 /**
  * FIXME: 数组除法
@@ -173,6 +182,32 @@ function average(arr, start = 0){
  function divide(arr, count){
 	 //FIXME:  matrix divide
  }
+ 
+ 
+/**
+ * array arithmetic
+ * 数组算术运算
+ * @param {Array} main_arr
+ * @param {Array} operate_arr
+ * @param {Function} operate
+ * @return {Array}
+ * @inner
+ */
+ function arithmetic(main_arr, operate_arr, operate){
+	 if(!Array.isArray(main_arr) || 
+			!Array.isArray(operate_arr) ||
+			!typeof operate === 'function'){
+		 throw new TypeError('The parameter type must be an Array');
+	 }
+	 
+	 if(main_arr.length !== operate_arr.length){
+		 throw new RangeError('The length of the two array must be the same');
+	 }
+	 //TODO: 判断数组元素
+	 return main_arr.map(operate);
+ }
+ 
+ 
 
 /**
  * dispatch Operate
@@ -184,7 +219,8 @@ function average(arr, start = 0){
  */
  function dispatchOperate(type, rowOperate, columnOperate, globalOperate){
 	 if(!typeof rowOperate === 'function' && 
-				!typeof columnOperate === 'function'){
+				!typeof columnOperate === 'function' &&
+				!typeof globalOperate === 'function'){
 		 throw new TypeError('The parameter type must be a function');
 	 }
 	 

@@ -59,6 +59,10 @@ describe('Matrix', ()=>{
 		it('cumulate([[1,2], [2,3]], [1,2], \'column\') should return [[2, 3], [4, 5]]', ()=>{
 				assert.deepEqual(cumulate(matrix, [1,2], 'column'), [[2, 3], [4, 5]]);
 		});
+		//global
+		it('cumulate([[1,2], [2,3]], [[1,2], [2,3]], \'global\') should return [[2,4], [4,9]]', ()=>{
+			assert.deepEqual(cumulate(matrix, [[1,2], [2,3]], 'global'), [[2,4], [4,6]]);
+		});
 	});
 	
 });
