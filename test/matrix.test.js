@@ -3,6 +3,7 @@ const Matrix = require('../src/matrix');
 
 const average = Matrix.average;
 const cumulate = Matrix.cumulate;
+const minus = Matrix.minus;
 
 describe('Matrix', ()=>{
 	
@@ -64,5 +65,24 @@ describe('Matrix', ()=>{
 			assert.deepEqual(cumulate(matrix, [[1,2], [2,3]], 'global'), [[2,4], [4,6]]);
 		});
 	});
+	
+	
+	describe('# Matrix.minus', ()=>{
+		let matrix = [ [1,2,3], [2,3,4] ];
+		//row
+		it('minus(matrix, [1,2,3], \'row\') should return [[0,0,0],[1,1,1]]', ()=>{
+			assert.deepEqual(minus(matrix, [1,2,3], 'row'), [[0,0,0],[1,1,1]]);
+		});
+		//column
+		it('minus(matrix, [1,2], \'column\') should return [[0,1,2], [0,1,2]]', ()=>{
+			assert.deepEqual(minus(matrix, [1,2], 'column'), [[0,1,2], [0,1,2]]);
+		});
+		//global
+		it('minus(matrix, [[0,1,2], [1,2,3]], \'global\') should return [[1,1,1], [1,1,1]]', ()=>{
+			assert.deepEqual(minus(matrix, [[0,1,2], [1,2,3]], 'global'), [[1,1,1], [1,1,1]]);
+		});
+		
+	});
+	
 	
 });

@@ -89,22 +89,17 @@
 	 });
  }
  
- 
-/**
- * 
- */
 
 
 /**
- * 矩阵累加
+ * matrix cumulate arithmetic
+ * 矩阵加运算
  * @param {Array} martix 待加矩阵
  * @param {Array} arr 做加数的数组
  * @param {String} [type='global'] 相加类型
- * @param {Number} [start=0] 数组中参与累加的起始位置
  * @return {Array}
- * bug: 没有检查参数合法性
  */
-Matrix.cumulate = function(matrix, arr, type = 'global', start = 0){
+Matrix.cumulate = function(matrix, arr, type = 'global'){
   
 	return dispatchOperate(type, 
 									//row cumulate handle
@@ -123,6 +118,33 @@ Matrix.cumulate = function(matrix, arr, type = 'global', start = 0){
 	}
 	
 }
+
+
+/**
+ * matrix minus arithmetic
+ * 矩阵减运算
+ * @param {Array} matrix
+ * @param {Array} arr
+ * @param {String} [type='global']
+ * @return {Array}
+ */
+ Matrix.minus = function(matrix, arr, type='global'){
+	return dispatchOperate(type, 
+											//row handle
+											function(){return matrix.map((v, i)=>minus(v, arr));},
+											columnOperate,
+											//global handle
+											function(){return matrix.map((v, i)=>minus(v, arr[i]))});
+	
+	function columnOperate(){
+		if(matrix.length !== arr.length){
+			throw new RangeError('The length of the two array must be the same');
+		}
+		
+		return matrix.map((val, index)=>val.map(v=>v-arr[index]));
+	}
+	
+ }
 
 
 /**
@@ -150,8 +172,8 @@ function average(arr, start = 0){
 }
 
 /**
- * array cumulate
- * 数组累加
+ * array cumulate arithmetic
+ * 数组加运算
  * @param {Array} main_arr 待加数组
  * @param {Array} add_arr 做被加数的数组
  * @return {Array}
@@ -163,7 +185,7 @@ function average(arr, start = 0){
 
  
 /**
- * FIXME:array minus
+ * array minus arithmetic
  * 数组减运算
  * @param {Array} main_arr
  * @param {Array} minus_arr
@@ -173,7 +195,6 @@ function average(arr, start = 0){
  function minus(main_arr, minus_arr){
 	 return arithmetic(main_arr, minus_arr, (val, index)=>val-minus_arr[index]);
  }
- //console.log(minus([1,2,3], [1,2,2]));
 
 
 /**
