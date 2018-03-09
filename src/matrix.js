@@ -35,25 +35,29 @@
 	 }
 	 
 	 let len = matrix.length;
-	 Matrix.normalize(matrix);
+	 matrix = Matrix.normalize(matrix);
 	 
 	 return dispatchOperate(type, 
 										//row average handle
-										function(){return matrix.map((v, i, a)=>average(v));},
+										function(){return matrix.map((v, i)=>average(v));},
 										columnAverage,
-										function(){return matrix.reduce((p, v, i, a)=>p+average(v), 0)/len;});
+										//global average handle
+										function(){return matrix.reduce((p, v, i)=>p+average(v), 0)/len;});
 										
 	 //column average handle
 	 function columnAverage(){
 		 let sum_arr = new Array(matrix[0].length).fill(0);
+		 
 		 matrix[0].forEach((val, index, arr)=>{
 			 let count = 0;
 			 matrix.forEach((v, i, a)=>{
 				 //i === 0 ? sum_arr[index] = v[index] : sum_arr[index] += v[index];
-				 typeof v[index] !== 'number' || isNaN(v[index]) ? count++ : sum_arr[index] += v[index] ;
+				 let cell = v[index];
+				 typeof cell !== 'number' || isNaN(cell) ? count++ : sum_arr[index] += cell ;
 			 });
 			 sum_arr[index] /= (matrix.length-count);
 		 })
+		 
 		 return sum_arr;
 	 }
 	 
@@ -61,32 +65,44 @@
  
  
 /**
- * matrix normalize [ [1], [1,2] ] -> [ [1,0], [1,2] ]
+ * matrix normalize [ [1], [,2] ] -> [ [1,null], [null,2] ]
  * 矩阵标准化
  * 1.每行元素个数相同，不够的补null
  * 2.matrix[i]为数字时，改为数组，不是数组或数字类型时删除元素
+ * 3.matrix[i][j]数字化后为NaN的设为null
  * @param {Array} matrix
+ * @return {Array}
  */
  Matrix.normalize = function(matrix){
 	 let max_len = 0;
 	 
 	 for(let i = matrix.length-1; i>=0; i--){
-		 let val = matrix[i];
+		 let row = matrix[i],
+				 len;
 		 
-		 if(typeof val === 'number'){
-			 val = matrix[i] = [val];
+		 if(typeof row === 'number'){
+			 row = matrix[i] = [row];
 		 }
 		 
-		 if(!Array.isArray(val)){
+		 if(!Array.isArray(row)){
 			 matrix.splice(i, 1);
+			 continue;
 		 }
 		 
-		 max_len = matrix[i].length >= max_len ? matrix[i].length : max_len;
+		 len = row.length;
+		 
+		 for(let j = 0; j<len; j++){
+			 matrix[i][j] = isNaN(Number(row[j])) ? null : Number(row[j]);
+		 }
+		 
+		 max_len = len > max_len ? len : max_len;
 	 };
 	 //fix matrix
 	 matrix.forEach((val, index, arr)=>{
 		 for(let i = val.length; i<max_len; val[i++] = null) /* empty */;
 	 });
+	 
+	 return matrix
  }
  
 
@@ -198,12 +214,30 @@ function average(arr, start = 0){
 
 
 /**
- * FIXME: 数组除法
+ * array plus arithmetic
+ * 数组乘运算
+ * @param {Array} main_arr
+ * @param {Array} plus_arr
+ * @return {Array}
+ * @inner
  */
- function divide(arr, count){
-	 //FIXME:  matrix divide
+ function plus(main_arr, plus_arr){
+	 return arithmetic(main_arr, plus_arr, (val, index)=>val*plus_arr[index]);
  }
- 
+console.log(plus([1,2,3], [1,2,3]));
+
+/**
+ * array divide arithmetic
+ * 数组除运算
+ * @param {Array} main_arr
+ * @param {Array} divide_arr
+ * @return {Array}
+ * @inner
+ */
+ function divide(main_arr, divide_arr){
+	 return arithmetic(main_arr, divide_arr, (val, index)=>val/divide_arr[index]);
+ }
+ console.log(divide([1,2,3], [1,2,3]));
  
 /**
  * array arithmetic
