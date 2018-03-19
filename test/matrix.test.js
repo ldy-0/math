@@ -4,6 +4,7 @@ const Matrix = require('../src/matrix');
 const average = Matrix.average;
 const cumulate = Matrix.cumulate;
 const minus = Matrix.minus;
+const plus = Matrix.plus;
 
 describe('Matrix', ()=>{
 	
@@ -88,6 +89,23 @@ describe('Matrix', ()=>{
 			assert.deepEqual(minus(matrix, [[0,1,2], [1,2,3]], 'global'), [[1,1,1], [1,1,1]]);
 		});
 		
+	});
+	
+	
+	describe('# Matrix.plus', ()=>{
+		let matrix = [ [1,2,3], [2,3,4] ];
+		//row
+		it('plus(matrix, [1,2,3], \'row\') should return [[1,4,9], [2,6,12]]', ()=>{
+			assert.deepEqual(plus(matrix, [1,2,3], 'row'), [[1,4,9], [2,6,12]]);
+		});
+		//column
+		it('plus(matrix, [1,2], \'column\') should return [[1,2,3], [4,6,8]]', ()=>{
+			assert.deepEqual(plus(matrix, [1,2], 'column'), [[1,2,3], [4,6,8]]);
+		});
+		//global
+		it('plus(matrix, [[1,2,3], [2,3,4]], \'global\') should return [[1,4,9],[4,9,16]]', ()=>{
+			assert.deepEqual(plus(matrix, [[1,2,3], [2,3,4]], 'global'), [[1,4,9],[4,9,16]]);
+		});
 	});
 	
 	

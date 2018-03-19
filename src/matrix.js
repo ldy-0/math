@@ -9,10 +9,22 @@
  * FIXME: 函数式
  * @constructor Matrix
  */
- /* function Matrix(){
+ //function Matrix(arr){
 	 
 	 
- } */
+ //}
+ 
+/**
+ * FIXME: 转数组为矩阵
+ *
+ */
+ function toMatrix(arr){
+	 let matrix_prototype = {};
+	 [arr.__proto__, matrix_prototype.__proto__] = [matrix_prototype, arr.__proto__];
+	 console.log(arr.__proto__ === matrix_prototype, matrix_prototype instanceof Array);
+ }
+ toMatrix([1,2]);
+ 
  const Matrix = {};
  
 /**
@@ -161,6 +173,33 @@ Matrix.cumulate = function(matrix, arr, type = 'global'){
 	}
 	
  }
+ 
+ 
+ /**
+  * matrix plus arithmetic
+	* 矩阵乘运算
+	* @param {Array} matrix
+	* @param {Array} arr
+	* @param {String} [type='global']
+	* @return {Array}
+	*/
+	Matrix.plus = function(matrix, arr, type='global'){
+		return dispatchOperate(type,
+								//global handle
+								function(){return matrix.map((v)=>plus(v, arr))},
+								columnOperate,
+								//global handle
+								function(){return matrix.map((v, i)=>plus(v, arr[i]))} );
+		
+		function columnOperate(){
+			if(matrix.length !== arr.length){
+				throw new RangeError('The length of the two array must be the same');
+			}
+			
+			return matrix.map((v, i)=>v.map(val=>val*arr[i]));
+		}
+		
+	}
 
 
 /**
@@ -224,7 +263,7 @@ function average(arr, start = 0){
  function plus(main_arr, plus_arr){
 	 return arithmetic(main_arr, plus_arr, (val, index)=>val*plus_arr[index]);
  }
-console.log(plus([1,2,3], [1,2,3]));
+
 
 /**
  * array divide arithmetic
@@ -237,7 +276,7 @@ console.log(plus([1,2,3], [1,2,3]));
  function divide(main_arr, divide_arr){
 	 return arithmetic(main_arr, divide_arr, (val, index)=>val/divide_arr[index]);
  }
- console.log(divide([1,2,3], [1,2,3]));
+ 
  
 /**
  * array arithmetic
