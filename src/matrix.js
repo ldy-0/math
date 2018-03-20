@@ -169,7 +169,7 @@ Matrix.cumulate = function(matrix, arr, type = 'global'){
 			throw new RangeError('The length of the two array must be the same');
 		}
 		
-		return matrix.map((val, index)=>val.map(v=>v-arr[index]));
+		return matrix.map((val, index) => val.map(v => v-arr[index]));
 	}
 	
  }
@@ -186,20 +186,46 @@ Matrix.cumulate = function(matrix, arr, type = 'global'){
 	Matrix.plus = function(matrix, arr, type='global'){
 		return dispatchOperate(type,
 								//global handle
-								function(){return matrix.map((v)=>plus(v, arr))},
+								function(){return matrix.map((v)=>plus(v, arr));},
 								columnOperate,
 								//global handle
-								function(){return matrix.map((v, i)=>plus(v, arr[i]))} );
+								function(){return matrix.map((v, i)=>plus(v, arr[i]));} );
 		
 		function columnOperate(){
 			if(matrix.length !== arr.length){
 				throw new RangeError('The length of the two array must be the same');
 			}
 			
-			return matrix.map((v, i)=>v.map(val=>val*arr[i]));
+			return matrix.map((v, i) => v.map(val => val*arr[i]));
 		}
 		
 	}
+	
+	
+/**
+ * matrix divide arithmetic
+ * 矩阵除运算
+ * @param {Array} matrix
+ * @param {Array} arr
+ * @param {String} [type='global']
+ * @return {Array}
+ */
+ Matrix.divide = function(matrix, arr, type='global'){
+	return dispatchOperate(type, 
+										//row handle
+										function(){return matrix.map(v => divide(v, arr));},
+										columnOperate,
+										//global handle
+										function(){return matrix.map((v, i) => divide(v, arr[i]));});
+										
+	function columnOperate(){
+		if(matrix.length !== arr.length){
+			throw new RangeError('The length of the two array must be the same');
+		}
+			
+		return matrix.map((v, i) => v.map(val => val/arr[i]));
+	}
+ }
 
 
 /**
@@ -235,6 +261,7 @@ function average(arr, start = 0){
  * @inner
  */
  function cumulate(main_arr, add_arr){
+	 //TODO: add_arr is Number
 	 return arithmetic(main_arr, add_arr, (val, index)=>val+add_arr[index]);
  }
 

@@ -5,6 +5,7 @@ const average = Matrix.average;
 const cumulate = Matrix.cumulate;
 const minus = Matrix.minus;
 const plus = Matrix.plus;
+const divide = Matrix.divide;
 
 describe('Matrix', ()=>{
 	
@@ -56,11 +57,12 @@ describe('Matrix', ()=>{
 																	 [1, null, 3, 4, 5 ] ]) ); 
 	});
 	
+	/* arithmetic */
 	
-	describe('# Matrix.cumulate', ()=>{
+	describe('# Matrix.cumulate \n\t matrix : [ [1,2], [2,3] ]', ()=>{
 		let matrix = [ [1,2], [2,3] ];
 		//row
-		it('cumulate([[1,2], [2,3]], [1,2], \'column\') should return [ [ 2, 4 ], [ 3, 5 ] ]', ()=>{
+		it('cumulate(matrix, [1,2], \'column\') should return [ [ 2, 4 ], [ 3, 5 ] ]', ()=>{
 				assert.deepEqual(cumulate(matrix, [1,2], 'row'), [[2, 4], [3, 5]]);
 		});
 		//column
@@ -74,7 +76,7 @@ describe('Matrix', ()=>{
 	});
 	
 	
-	describe('# Matrix.minus', ()=>{
+	describe('# Matrix.minus \n\t matrix : [ [1,2,3], [2,3,4] ]', ()=>{
 		let matrix = [ [1,2,3], [2,3,4] ];
 		//row
 		it('minus(matrix, [1,2,3], \'row\') should return [[0,0,0],[1,1,1]]', ()=>{
@@ -92,7 +94,7 @@ describe('Matrix', ()=>{
 	});
 	
 	
-	describe('# Matrix.plus', ()=>{
+	describe('# Matrix.plus \n\t matrix : [ [1,2,3], [2,3,4] ]', ()=>{
 		let matrix = [ [1,2,3], [2,3,4] ];
 		//row
 		it('plus(matrix, [1,2,3], \'row\') should return [[1,4,9], [2,6,12]]', ()=>{
@@ -107,6 +109,25 @@ describe('Matrix', ()=>{
 			assert.deepEqual(plus(matrix, [[1,2,3], [2,3,4]], 'global'), [[1,4,9],[4,9,16]]);
 		});
 	});
+	
+	
+	describe('# Matrix.divide \n\t matrix:[ [11,22,33], [22,33,42] ]', ()=>{
+		let matrix = [ [11,22,33], [22,33,42] ];
+		//row
+		it('divide(matrix, [1,2,3], \'row\') should return [ [11,11,11], [22,16.5,14] ]', ()=>{
+			assert.deepEqual(divide(matrix, [1,2,3], 'row'), [ [11,11,11], [22,16.5,14] ]);
+		});
+		//column
+		it('divide(matrix, [1,2], \'column\') should return [ [11,22,33], [11,16.5,21] ]', ()=>{
+			assert.deepEqual(divide(matrix, [1,2], 'column'), [ [11,22,33], [11,16.5,21] ]);
+		});
+		//global
+		it('divide(matrix, [[1,2,3],[4,5,6]], \'global\') should return [ [11,11,11], [5.5,6.6,7] ]', ()=>{
+			assert.deepEqual(divide(matrix, [[1,2,3],[4,5,6]], 'global'), [ [11,11,11], [5.5,6.6,7] ]);
+		});
+	});
+	
+	/* arithmetic end */
 	
 	
 });
