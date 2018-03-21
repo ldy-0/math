@@ -13,7 +13,7 @@
 	 
 	 
  //}
- 
+
 /**
  * FIXME: 转数组为矩阵
  *
@@ -77,7 +77,9 @@
  
  
 /**
- * matrix normalize [ [1], [,2] ] -> [ [1,null], [null,2] ]
+ * 
+ * [ [1], [,2] ] -> [ [1,null], [null,2] ]
+ * matrix normalize
  * 矩阵标准化
  * 1.每行元素个数相同，不够的补null
  * 2.matrix[i]为数字时，改为数组，不是数组或数字类型时删除元素
@@ -120,32 +122,31 @@
 
 
 /**
- * matrix cumulate arithmetic
+ * matrix add arithmetic
  * 矩阵加运算
  * @param {Array} martix 待加矩阵
  * @param {Array} arr 做加数的数组
  * @param {String} [type='global'] 相加类型
  * @return {Array}
  */
-Matrix.cumulate = function(matrix, arr, type = 'global'){
+ Matrix.add = function(matrix, arr, type = 'global'){
   
-	return dispatchOperate(type, 
-									//row cumulate handle
-									function(){return matrix.map((v)=>cumulate(v, arr));}, columnCumulate,
-									//global cumulate handle
-									function(){return matrix.map((v, i)=>cumulate(v, arr[i]));});
+	 return dispatchOperate(type, 
+									//row handle
+									function(){return matrix.map(v => add(v, arr));}, 
+									//column and global handle
+									operate, operate);
 	
 	
-	//column cumulate handle
-	function columnCumulate(){
-		if(matrix.length !== arr.length){
-			throw new RangeError('The length of the two array must be the same ');
-		}
+	 function operate(){
+		 if(matrix.length !== arr.length){
+			 throw new RangeError('The length of the two array must be the same ');
+		 }
 		
-		return matrix.map((row, index, a)=>row.map((v, i)=>v+arr[index]) );
-	}
+		 return matrix.map((row, i)=> add(row, arr[i]) );
+	 }
 	
-}
+ }
 
 
 /**
@@ -157,49 +158,47 @@ Matrix.cumulate = function(matrix, arr, type = 'global'){
  * @return {Array}
  */
  Matrix.minus = function(matrix, arr, type='global'){
-	return dispatchOperate(type, 
+	 return dispatchOperate(type, 
 											//row handle
-											function(){return matrix.map((v, i)=>minus(v, arr));},
-											columnOperate,
-											//global handle
-											function(){return matrix.map((v, i)=>minus(v, arr[i]))});
+											function(){return matrix.map(v => minus(v, arr));},
+											//column and global handle
+											operate, operate);
 	
-	function columnOperate(){
-		if(matrix.length !== arr.length){
-			throw new RangeError('The length of the two array must be the same');
-		}
+	 function operate(){
+		 if(matrix.length !== arr.length){
+			 throw new RangeError('The length of the two array must be the same');
+		 }
 		
-		return matrix.map((val, index) => val.map(v => v-arr[index]));
-	}
+		 return matrix.map((v, i) => minus(v, arr[i]));
+	 }
 	
  }
  
  
  /**
-  * matrix plus arithmetic
+  * matrix times arithmetic
 	* 矩阵乘运算
 	* @param {Array} matrix
 	* @param {Array} arr
 	* @param {String} [type='global']
 	* @return {Array}
 	*/
-	Matrix.plus = function(matrix, arr, type='global'){
+ Matrix.times = function(matrix, arr, type='global'){
 		return dispatchOperate(type,
-								//global handle
-								function(){return matrix.map((v)=>plus(v, arr));},
-								columnOperate,
-								//global handle
-								function(){return matrix.map((v, i)=>plus(v, arr[i]));} );
+								//row handle
+								function(){return matrix.map(v => times(v, arr));},
+								//column and global handle
+								operate, operate );
 		
-		function columnOperate(){
+		function operate(){
 			if(matrix.length !== arr.length){
 				throw new RangeError('The length of the two array must be the same');
 			}
 			
-			return matrix.map((v, i) => v.map(val => val*arr[i]));
+			return matrix.map((v, i) => times(v, arr[i]));
 		}
 		
-	}
+ }
 	
 	
 /**
@@ -211,20 +210,19 @@ Matrix.cumulate = function(matrix, arr, type = 'global'){
  * @return {Array}
  */
  Matrix.divide = function(matrix, arr, type='global'){
-	return dispatchOperate(type, 
+	 return dispatchOperate(type, 
 										//row handle
 										function(){return matrix.map(v => divide(v, arr));},
-										columnOperate,
-										//global handle
-										function(){return matrix.map((v, i) => divide(v, arr[i]));});
+										//column and global handle
+										operate, operate);
 										
-	function columnOperate(){
-		if(matrix.length !== arr.length){
-			throw new RangeError('The length of the two array must be the same');
-		}
+	 function operate(){
+		 if(matrix.length !== arr.length){
+			 throw new RangeError('The length of the two array must be the same');
+		 }
 			
-		return matrix.map((v, i) => v.map(val => val/arr[i]));
-	}
+		 return matrix.map((v, i) => divide(v, arr[i]));
+	 }
  }
 
 
@@ -256,12 +254,15 @@ function average(arr, start = 0){
  * array cumulate arithmetic
  * 数组加运算
  * @param {Array} main_arr 待加数组
- * @param {Array} add_arr 做被加数的数组
+ * @param {Array|Number} add_arr 做被加数的数组
  * @return {Array}
  * @inner
  */
- function cumulate(main_arr, add_arr){
-	 //TODO: add_arr is Number
+ function add(main_arr, add_arr){
+	 if(typeof add_arr === 'number'){
+		 return main_arr.map(v => v+add_arr);
+	 }
+	 
 	 return arithmetic(main_arr, add_arr, (val, index)=>val+add_arr[index]);
  }
 
@@ -270,11 +271,15 @@ function average(arr, start = 0){
  * array minus arithmetic
  * 数组减运算
  * @param {Array} main_arr
- * @param {Array} minus_arr
+ * @param {Array|Number} minus_arr
  * @return {Array}
  * @inner
  */
  function minus(main_arr, minus_arr){
+	 if(typeof minus_arr === 'number'){
+		 return main_arr.map(v => v-minus_arr);
+	 }
+	 
 	 return arithmetic(main_arr, minus_arr, (val, index)=>val-minus_arr[index]);
  }
 
@@ -283,11 +288,15 @@ function average(arr, start = 0){
  * array plus arithmetic
  * 数组乘运算
  * @param {Array} main_arr
- * @param {Array} plus_arr
+ * @param {Array|Number} plus_arr
  * @return {Array}
  * @inner
  */
- function plus(main_arr, plus_arr){
+ function times(main_arr, plus_arr){
+	 if(typeof plus_arr === 'number'){
+		 return main_arr.map(v => v*plus_arr);
+	 }
+	 
 	 return arithmetic(main_arr, plus_arr, (val, index)=>val*plus_arr[index]);
  }
 
@@ -296,11 +305,15 @@ function average(arr, start = 0){
  * array divide arithmetic
  * 数组除运算
  * @param {Array} main_arr
- * @param {Array} divide_arr
+ * @param {Array|Number} divide_arr
  * @return {Array}
  * @inner
  */
  function divide(main_arr, divide_arr){
+	 if(typeof divide_arr === 'number'){
+		 return main_arr.map(v => v/divide_arr);
+	 }
+	 
 	 return arithmetic(main_arr, divide_arr, (val, index)=>val/divide_arr[index]);
  }
  
@@ -336,6 +349,7 @@ function average(arr, start = 0){
  * @param {String} type
  * @param {Function} rowOperate
  * @param {Function} columnOperate
+ * @param {Function} globalOperate
  * @return {Array}
  */
  function dispatchOperate(type, rowOperate, columnOperate, globalOperate){

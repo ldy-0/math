@@ -2,16 +2,16 @@ const assert = require('assert');
 const Matrix = require('../src/matrix');
 
 const average = Matrix.average;
-const cumulate = Matrix.cumulate;
+const add = Matrix.add;
 const minus = Matrix.minus;
-const plus = Matrix.plus;
+const times = Matrix.times;
 const divide = Matrix.divide;
 
 describe('Matrix', ()=>{
 	
 	describe('# Matrix.average', ()=>{
 		it('average([11,22,33]) should return 22', ()=>{
-			assert.equal(average([11,22,33]), 22);
+			assert.strictEqual(average([11,22,33]), 22);
 		});
 		it('average([\'a\', 1, 2, 3], 1) should return 2', ()=>{
 			assert.equal(average(['a', 1, 2, 3], 1), 2);
@@ -59,19 +59,19 @@ describe('Matrix', ()=>{
 	
 	/* arithmetic */
 	
-	describe('# Matrix.cumulate \n\t matrix : [ [1,2], [2,3] ]', ()=>{
+	describe('# Matrix.add \n\t matrix : [ [1,2], [2,3] ]', ()=>{
 		let matrix = [ [1,2], [2,3] ];
 		//row
-		it('cumulate(matrix, [1,2], \'column\') should return [ [ 2, 4 ], [ 3, 5 ] ]', ()=>{
-				assert.deepEqual(cumulate(matrix, [1,2], 'row'), [[2, 4], [3, 5]]);
+		it('add(matrix, [1,2], \'column\') should return [ [ 2, 4 ], [ 3, 5 ] ]', ()=>{
+				assert.deepEqual(add(matrix, [1,2], 'row'), [[2, 4], [3, 5]]);
 		});
 		//column
-		it('cumulate([[1,2], [2,3]], [1,2], \'column\') should return [[2, 3], [4, 5]]', ()=>{
-				assert.deepEqual(cumulate(matrix, [1,2], 'column'), [[2, 3], [4, 5]]);
+		it('add([[1,2], [2,3]], [1,2], \'column\') should return [[2, 3], [4, 5]]', ()=>{
+				assert.deepEqual(add(matrix, [1,2], 'column'), [[2, 3], [4, 5]]);
 		});
 		//global
-		it('cumulate([[1,2], [2,3]], [[1,2], [2,3]], \'global\') should return [[2,4], [4,9]]', ()=>{
-			assert.deepEqual(cumulate(matrix, [[1,2], [2,3]], 'global'), [[2,4], [4,6]]);
+		it('add([[1,2], [2,3]], [[1,2], [2,3]], \'global\') should return [[2,4], [4,9]]', ()=>{
+			assert.deepEqual(add(matrix, [[1,2], [2,3]], 'global'), [[2,4], [4,6]]);
 		});
 	});
 	
@@ -94,19 +94,19 @@ describe('Matrix', ()=>{
 	});
 	
 	
-	describe('# Matrix.plus \n\t matrix : [ [1,2,3], [2,3,4] ]', ()=>{
+	describe('# Matrix.times \n\t matrix : [ [1,2,3], [2,3,4] ]', ()=>{
 		let matrix = [ [1,2,3], [2,3,4] ];
 		//row
-		it('plus(matrix, [1,2,3], \'row\') should return [[1,4,9], [2,6,12]]', ()=>{
-			assert.deepEqual(plus(matrix, [1,2,3], 'row'), [[1,4,9], [2,6,12]]);
+		it('times(matrix, [1,2,3], \'row\') should return [[1,4,9], [2,6,12]]', ()=>{
+			assert.deepEqual(times(matrix, [1,2,3], 'row'), [[1,4,9], [2,6,12]]);
 		});
 		//column
-		it('plus(matrix, [1,2], \'column\') should return [[1,2,3], [4,6,8]]', ()=>{
-			assert.deepEqual(plus(matrix, [1,2], 'column'), [[1,2,3], [4,6,8]]);
+		it('times(matrix, [1,2], \'column\') should return [[1,2,3], [4,6,8]]', ()=>{
+			assert.deepEqual(times(matrix, [1,2], 'column'), [[1,2,3], [4,6,8]]);
 		});
 		//global
-		it('plus(matrix, [[1,2,3], [2,3,4]], \'global\') should return [[1,4,9],[4,9,16]]', ()=>{
-			assert.deepEqual(plus(matrix, [[1,2,3], [2,3,4]], 'global'), [[1,4,9],[4,9,16]]);
+		it('times(matrix, [[1,2,3], [2,3,4]], \'global\') should return [[1,4,9],[4,9,16]]', ()=>{
+			assert.deepEqual(times(matrix, [[1,2,3], [2,3,4]], 'global'), [[1,4,9],[4,9,16]]);
 		});
 	});
 	
