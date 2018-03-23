@@ -59,17 +59,35 @@ describe('Matrix', ()=>{
 	
 	/* arithmetic */
 	
-	describe('# 一维矩阵四则运算: ', ()=>{
-		let matrix = [1,2,3,4,5];
+	describe('\n # 一维矩阵四则运算: \n\t matrix:[1,2,3,4,5]\n\t arr:[11,22,33,44,55]', ()=>{
+		let matrix = [1,2,3,4,5],
+				arr = [1.1,2.2,3.3,4.4,5.5];
+		
 		describe('## Matrix.add', ()=>{
-			it('add(matrix, [11,22,33,44,55]) should return [12,24,36,48,60]', ()=>{
-				assert.deepEqual(add(matrix, [11,22,33,44,55]), [12,24,36,48,60]);
+			it('add(matrix, arr, \'row\') should return [2.1,4.2,6.3,8.4,6]', ()=>{
+				assert.deepEqual(add(matrix, arr, 'row'), [2.1,4.2,6.3,8.4,6]);
+			});
+		});
+		describe('## Matrix.minus', ()=>{
+			it('minus(matrix, arr, \'row\') should return [-0.1, -0.2, -0.3, -0.4, -0.5]', ()=>{
+				assert.deepEqual(minus(matrix, arr, 'row'), [-0.1, -0.2, -0.3, -0.4, -0.5]);
+			});
+		});
+		describe('## Matrix.times', ()=>{
+			it('times(matrix, arr, \'row\') should return [1.1, 4.4, 9.9, 17.6, 27.5]', ()=>{
+				assert.deepEqual(times(matrix, arr, 'row'), [1.1, 4.4, 9.9, 17.6, 27.5]);
+			});
+		});
+		describe('## Matrix.divide', ()=>{
+			it('divide(matrix, arr, \'row\') should return []', ()=>{
+				assert.deepEqual(divide(matrix, arr, 'row'), [1/1.1, 1/1.1, 1/1.1, 1/1.1, 1/1.1]);
 			});
 		});
 		
 	});
 	
-	describe('# 二维矩阵四则运算', ()=>{
+	
+	describe('\n# 二维矩阵四则运算', ()=>{
 		
 		describe('# Matrix.add \n\t matrix : [ [1,2], [2,3] ]', ()=>{
 			let matrix = [ [1,2], [2,3] ];
