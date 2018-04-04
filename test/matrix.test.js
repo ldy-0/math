@@ -1,71 +1,56 @@
 const assert = require('assert');
 const Matrix = require('../lib/matrix');
 
-const average = Matrix.average;
+
 const add = Matrix.add;
 const minus = Matrix.minus;
 const times = Matrix.times;
 const divide = Matrix.divide;
+//
+const average = Matrix.average;
 
 describe('Matrix', ()=>{
 	
-	describe('# Matrix.average', ()=>{
-		it('average([11,22,33]) should return 22', ()=>{
-			assert.strictEqual(average([11,22,33]), 22);
+	describe('# 矩阵格式', ()=>{
+		describe('# Matrix.toNumber', ()=>{
+			let matrix = ['1', 2, "3", , '', ' '];
+			it('Matrix.toNumber(matrix) should return [1,2,3,null,0,0]', ()=>{
+				assert.deepEqual(Matrix.toNumber(matrix), [1,2,3,null,0,0]);
+			});
 		});
-		it('average([\'a\', 1, 2, 3], 1) should return 2', ()=>{
-			assert.equal(average(['a', 1, 2, 3], 1), 2);
-		});
-		it('average([1, 2, 3, 4], \'a\', 1) should return 2 ', ()=>{
-			assert.equal(average([1, 2, 3, 4], 'a', 1), 3);
-		});
-		//row average
-		it('average([[22, 22, 22], [2, 2, 11]], \'row\') should return [22, 5]', ()=>{
-			assert.deepEqual(average([ [22, 22, 22], [2, 2, 11] ], 'row'), [22, 5]);
-		});
-		//global average
-		it('average([ [22, 22, 22], [2, 1, 0] ]) should return 11.5', ()=>{
-			assert.equal(average([ [22, 22, 22], [2, 1, 0] ]), 11.5);
-		});
-		//column average
-		it('average([ [1,2,3,4], [2,3,4,5] ], \'column\') should return [1.5,2.5,3.5,4.5] ', ()=>{
-			assert.deepEqual(average([ [1,2,3,4], [2,3,4,5] ], 'column'), [1.5,2.5,3.5,4.5]);
-		});
-		it('average([ [1,2,3,4], [2,3,4,5] ], \'column\') should return [1.5,2.5,3.5,4.5] ', ()=>{
-			assert.deepEqual(average([ [1,2,3,4], [2,3,4] ], 'column'), [1.5,2.5,3.5,4]);
+		
+		describe('# Matrix.normalize', ()=>{
+			let matrix = [[1,2], [1,2,3,4], 5, [], 'aaaaaa', [1,,3,4,5] ];
+			
+			matrix = Matrix.normalize(matrix);
+			
+			it('matrix is \
+													[ \
+														[1, 	 2, 	 null, null, null ],\
+														[1, 	 2, 	 3, 	 4, 	 null ],\
+														[null, null, null, null, null ],\
+														[1, 	 null, 3, 	 4, 	 5 ]\
+													]', 
+			()=>assert.deepEqual(matrix, [ [1, 2, null, null, null ],
+																		 [1, 2, 3, 4, null ],
+																		 [5, null, null, null, null],
+																		 [null, null, null, null, null ],
+																		 [1, null, 3, 4, 5 ] ]) ); 
 		});
 		
 	});
-
 	
-	describe('# Matrix.normalize', ()=>{
-		let matrix = [[1,2], [1,2,3,4], 5, [], 'aaaaaa', [1,,3,4,5] ];
-		
-		matrix = Matrix.normalize(matrix);
-		
-		it('matrix is \
-												[ \
-													[1, 	 2, 	 null, null, null ],\
-													[1, 	 2, 	 3, 	 4, 	 null ],\
-													[null, null, null, null, null ],\
-													[1, 	 null, 3, 	 4, 	 5 ]\
-												]', 
-		()=>assert.deepEqual(matrix, [ [1, 2, null, null, null ],
-																	 [1, 2, 3, 4, null ],
-																	 [5, null, null, null, null],
-																	 [null, null, null, null, null ],
-																	 [1, null, 3, 4, 5 ] ]) ); 
-	});
+	
 	
 	/* arithmetic */
 	
-	describe('\n # 一维矩阵四则运算: \n\t matrix:[1,2,3,4,5]\n\t arr:[11,22,33,44,55]', ()=>{
+	describe('\n # 一维矩阵四则运算: \n\t matrix:[1,2,3,4,5]\n\t arr:[1.1,2.2,3.3,4.4,5.5]', ()=>{
 		let matrix = [1,2,3,4,5],
 				arr = [1.1,2.2,3.3,4.4,5.5];
 		
 		describe('## Matrix.add', ()=>{
-			it('add(matrix, arr, \'row\') should return [2.1,4.2,6.3,8.4,6]', ()=>{
-				assert.deepEqual(add(matrix, arr, 'row'), [2.1,4.2,6.3,8.4,6]);
+			it('add(matrix, arr, \'row\') should return [2.1,4.2,6.3,8.4,10.5]', ()=>{
+				assert.deepEqual(add(matrix, arr, 'row'), [2.1,4.2,6.3,8.4,10.5]);
 			});
 		});
 		describe('## Matrix.minus', ()=>{
@@ -79,8 +64,8 @@ describe('Matrix', ()=>{
 			});
 		});
 		describe('## Matrix.divide', ()=>{
-			it('divide(matrix, arr, \'row\') should return []', ()=>{
-				assert.deepEqual(divide(matrix, arr, 'row'), [1/1.1, 1/1.1, 1/1.1, 1/1.1, 1/1.1]);
+			it('divide(matrix, arr, \'row\') should return [0.9090909090909092]', ()=>{
+				assert.deepEqual(divide(matrix, arr, 'row'), [0.9090909090909092, 0.9090909090909092, 0.9090909090909092, 0.9090909090909092, 0.9090909090909092]);
 			});
 		});
 		
@@ -162,6 +147,35 @@ describe('Matrix', ()=>{
 	
 	
 	/* arithmetic end */
+	
+	
+	describe('# Matrix.average', ()=>{
+		it('average([11,22,33]) should return 22', ()=>{
+			assert.strictEqual(average([11,22,33]), 22);
+		});
+		it('average([\'a\', 1, 2, 3], 1) should return 2', ()=>{
+			assert.equal(average(['a', 1, 2, 3], 1), 2);
+		});
+		it('average([1, 2, 3, 4], \'a\', 1) should return 2 ', ()=>{
+			assert.equal(average([1, 2, 3, 4], 'a', 1), 3);
+		});
+		//row average
+		it('average([[22, 22, 22], [2, 2, 11]], \'row\') should return [22, 5]', ()=>{
+			assert.deepEqual(average([ [22, 22, 22], [2, 2, 11] ], 'row'), [22, 5]);
+		});
+		//global average
+		it('average([ [22, 22, 22], [2, 1, 0] ]) should return 11.5', ()=>{
+			assert.equal(average([ [22, 22, 22], [2, 1, 0] ]), 11.5);
+		});
+		//column average
+		it('average([ [1,2,3,4], [2,3,4,5] ], \'column\') should return [1.5,2.5,3.5,4.5] ', ()=>{
+			assert.deepEqual(average([ [1,2,3,4], [2,3,4,5] ], 'column'), [1.5,2.5,3.5,4.5]);
+		});
+		it('average([ [1,2,3,4], [2,3,4,5] ], \'column\') should return [1.5,2.5,3.5,4.5] ', ()=>{
+			assert.deepEqual(average([ [1,2,3,4], [2,3,4] ], 'column'), [1.5,2.5,3.5,4]);
+		});
+		
+	});
 	
 	
 });
