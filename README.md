@@ -2,6 +2,9 @@
 A JavaScript library that provides some simple mathematical calculation methods. 
 
 提供一些简单数学计算方法的JavaScript库。
+- The array/matrix format conversion
+
+	数组矩阵格式转换
 - The array/matrix four operations
 	
   数组/矩阵的四则运算

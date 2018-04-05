@@ -149,6 +149,7 @@ describe('Matrix', ()=>{
 	/* arithmetic end */
 	
 	
+	
 	describe('# Matrix.average', ()=>{
 		it('average([11,22,33]) should return 22', ()=>{
 			assert.strictEqual(average([11,22,33]), 22);
@@ -175,6 +176,18 @@ describe('Matrix', ()=>{
 			assert.deepEqual(average([ [1,2,3,4], [2,3,4] ], 'column'), [1.5,2.5,3.5,4]);
 		});
 		
+	});
+	
+	
+	/* 链式调用 */
+	
+	describe('# 链式调用 \n\t main_arr: [1,2,3,4,5] \n\t arr: [1.1, 2.2, 3.3, 4.4, 5.5]', ()=>{
+		let main_arr = [1,2,3,4,5],
+				arr = [1.1, 2.2, 3.3, 4.4, 5.5];
+				
+		it('add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr) should return [2.1, 4.2, 6.3, 8.4, 10.5]', ()=>{
+			assert.deepEqual(add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr), [2.1, 4.2, 6.3, 8.4, 10.5]);
+		});
 	});
 	
 	
