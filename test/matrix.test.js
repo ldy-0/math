@@ -57,6 +57,9 @@ describe('Matrix', ()=>{
 			it('minus(matrix, arr, \'row\') should return [-0.1, -0.2, -0.3, -0.4, -0.5]', ()=>{
 				assert.deepEqual(minus(matrix, arr, 'row'), [-0.1, -0.2, -0.3, -0.4, -0.5]);
 			});
+			it('', ()=>{
+				assert.deepStrictEqual(minus(matrix, 1), [0,1,2,3,4]);
+			});
 		});
 		describe('## Matrix.times', ()=>{
 			it('times(matrix, arr, \'row\') should return [1.1, 4.4, 9.9, 17.6, 27.5]', ()=>{
@@ -187,6 +190,30 @@ describe('Matrix', ()=>{
 				
 		it('add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr) should return [2.1, 4.2, 6.3, 8.4, 10.5]', ()=>{
 			assert.deepEqual(add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr), [2.1, 4.2, 6.3, 8.4, 10.5]);
+		});
+	});
+	
+	
+	/* clone */
+	describe('# Matrix.clone', ()=>{
+		let main_arr = [1,2,3,4,5],
+				date = new Date(),
+				arr = [1, '2', null, , date, /a/g, [1,,2], {value: 1}],
+				obj = { value: 1 },
+				arr1 = [obj];
+		
+		it('Matrix.toMatrix(main_arr).clone() should return [1,2,3,4,5]', ()=>{
+			assert.deepStrictEqual(Matrix.toMatrix(main_arr).clone(), [1,2,3,4,5]);
+		});
+		
+		it('Matrix.toMatrix(arr).clone(true) should return [1, \'2\', null, undefined, date, /a/g, [1, undefined, 2], {value: 1}]', ()=>{
+			assert.deepStrictEqual(Matrix.toMatrix(arr).clone(true), [1, '2', null, undefined, date, /a/g, [1, undefined, 2], {value: 1}]);
+		});
+		
+		it('o[0].self === o[0]', ()=>{
+			obj.self = obj;
+			let o = Matrix.toMatrix(arr1).clone(true);
+			assert.deepStrictEqual(o[0].self === o[0], true);
 		});
 	});
 	
