@@ -14,8 +14,8 @@ describe('Matrix', ()=>{
 	describe('# 矩阵格式', ()=>{
 		describe('# Matrix.toNumber', ()=>{
 			let matrix = ['1', 2, "3", , '', ' '];
-			it('Matrix.toNumber(matrix) should return [1,2,3,null,0,0]', ()=>{
-				assert.deepEqual(Matrix.toNumber(matrix), [1,2,3,null,0,0]);
+			it('Matrix.toNumber(matrix) should return [1,2,3,null,null,0]', ()=>{
+				assert.deepEqual(Matrix.toNumber(matrix), [1,2,3,null,null,0]);
 			});
 		});
 		
@@ -190,6 +190,10 @@ describe('Matrix', ()=>{
 				
 		it('add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr) should return [2.1, 4.2, 6.3, 8.4, 10.5]', ()=>{
 			assert.deepEqual(add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr), [2.1, 4.2, 6.3, 8.4, 10.5]);
+		});
+		
+		it('add(main_arr, arr).average() should return 6.3', ()=>{
+			assert.deepStrictEqual(add(main_arr, arr).average(), 6.3);
 		});
 	});
 	
