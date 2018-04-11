@@ -152,6 +152,32 @@ describe('Matrix', ()=>{
 	/* arithmetic end */
 	
 	
+	describe('# Matrix.alter \n\t matrix: [ [1,2,3,4,5], [2,3,4,5,6] ] \n\t split_arr: [0, 2] \n\t operate_arr: [function(v){return v**2;}, function(v){return v*2;}]', ()=>{
+		let matrix = [ [1,2,3,4,5], [2,3,4,5,6] ],
+				split_arr = [0, 2],
+				operate_arr = [function(v){return v**2;}, function(v){return v*2;}];
+		it('Matrix.alter(matrix, split_arr, operate_arr) should return [\
+				[1, 4, 6, 8, 10],\
+				[4, 9, 8, 10, 12],\
+			]', ()=>{
+			assert.deepStrictEqual(Matrix.alter(matrix, split_arr, operate_arr), [
+				[1, 4, 6, 8, 10],
+				[4, 9, 8, 10, 12],
+			]);
+		});
+		
+		it('Matrix.alter(matrix, [0,1], operate_arr, \'column\') should return [\
+				[1, 4, 9, 16, 25],\
+				[4, 6, 8, 10, 11],\
+			]', ()=>{
+			assert.deepStrictEqual(Matrix.alter(matrix, [0,1], operate_arr, 'column'), [
+				[1, 4, 9, 16, 25],
+				[4, 6, 8, 10, 12],
+			]);
+		});
+	});
+	
+	
 	
 	describe('# Matrix.average', ()=>{
 		it('average([11,22,33]) should return 22', ()=>{
@@ -192,8 +218,9 @@ describe('Matrix', ()=>{
 			assert.deepEqual(add(main_arr, arr).add(main_arr).minus(main_arr).times(main_arr).divide(main_arr), [2.1, 4.2, 6.3, 8.4, 10.5]);
 		});
 		
-		it('add(main_arr, arr).average() should return 6.3', ()=>{
-			assert.deepStrictEqual(add(main_arr, arr).average(), 6.3);
+		let operate_arr = [function(v){return v-0.1;}, function(v){return v-0.3;}]
+		it('add(main_arr, arr).alter([0, 2], operate_arr).average() should return 6.08', ()=>{
+			assert.deepStrictEqual(add(main_arr, arr).alter([0, 2], operate_arr).average(), 6.08);
 		});
 	});
 	
