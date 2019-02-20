@@ -55,3 +55,19 @@ test('formatArray', function(){
   // console.log(res_arr.map(v => v.list), l_arr);
 });
 
+let arr = [
+    [1, 2, 3],
+    [1, 2],
+    [1, 2, 3],
+  ];
+test('getArray', function(){
+
+  let res_arr = Arr.getArray(18, arr);
+  console.error(res_arr);
+
+  // expect(res_arr).toEqual([0, 1, 1]);
+});
+
+// test('get', function(){ expect(Arr.getArray(7, arr)).toEqual([1, 0, 0]); });
+// test('get1', function(){ expect(Arr.getArray(18, arr)).toEqual([1, 1, 2]); });
+
