@@ -60,14 +60,10 @@ let arr = [
     [1, 2],
     [1, 2, 3],
   ];
-test('getArray', function(){
 
-  let res_arr = Arr.getArray(18, arr);
-  console.error(res_arr);
-
-  // expect(res_arr).toEqual([0, 1, 1]);
-});
-
-// test('get', function(){ expect(Arr.getArray(7, arr)).toEqual([1, 0, 0]); });
-// test('get1', function(){ expect(Arr.getArray(18, arr)).toEqual([1, 1, 2]); });
+test('getArray(0)', function(){ expect(Arr.getArray(0, arr)).toEqual([0, 0, 0]); });
+test('getArray(3)', function(){ expect(Arr.getArray(3, arr)).toEqual([0, 1, 0]); });
+test('getArray(6)', function(){ expect(Arr.getArray(6, arr)).toEqual([1, 0, 0]); });
+test('getArray(8)', function(){ expect(Arr.getArray(8, arr)).toEqual([1, 0, 2]); });
+test('getArray(17)', function(){ expect(Arr.getArray(17, arr)).toEqual([2, 1, 2]); });
 
