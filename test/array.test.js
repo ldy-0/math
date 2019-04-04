@@ -1,8 +1,6 @@
 const Arr = require('../lib/array');
 
-test('recursion checking each field.', function(){ 
-  expect({name: 1}).toEqual({name: 1});
-});
+test('recursion checking each field.', function(){ expect({name: 1}).toEqual({name: 1}); });
 
 // Arr.equal
 test('[0, 0, 0] alike [-1, 0, -1]', () =>{ expect(Arr.equal([0, 0, 0], [-1, 0, -1])).toBe(true); });
@@ -55,15 +53,31 @@ test('formatArray', function(){
   // console.log(res_arr.map(v => v.list), l_arr);
 });
 
-let arr = [
+describe('getArray test', () => {
+  let arr = [
     [1, 2, 3],
     [1, 2],
     [1, 2, 3],
   ];
 
-test('getArray(0)', function(){ expect(Arr.getArray(0, arr)).toEqual([0, 0, 0]); });
-test('getArray(3)', function(){ expect(Arr.getArray(3, arr)).toEqual([0, 1, 0]); });
-test('getArray(6)', function(){ expect(Arr.getArray(6, arr)).toEqual([1, 0, 0]); });
-test('getArray(8)', function(){ expect(Arr.getArray(8, arr)).toEqual([1, 0, 2]); });
-test('getArray(17)', function(){ expect(Arr.getArray(17, arr)).toEqual([2, 1, 2]); });
+  test('0', function(){ expect(Arr.getArray(0, arr)).toEqual([0, 0, 0]); });
+  test('3', function(){ expect(Arr.getArray(3, arr)).toEqual([0, 1, 0]); });
+  test('6', function(){ expect(Arr.getArray(6, arr)).toEqual([1, 0, 0]); });
+  test('8', function(){ expect(Arr.getArray(8, arr)).toEqual([1, 0, 2]); });
+  test('17', function(){ expect(Arr.getArray(17, arr)).toEqual([2, 1, 2]); });
+});
 
+// Arr.exchange
+describe('exchange', function(){
+  let arr = [
+    [
+      { id: 1, name: 'o1' },
+      { id: 22, name: 'o2' },
+      { id: 333, name: 'o3' },
+    ]
+  ];
+
+  test('get item.name where id === 1', () => { expect(Arr.exchange(arr, [1], 'id', 'name')).toEqual(['o1']); });
+  test('get item.name where id === 2', () => { expect(Arr.exchange(arr, [22], 'id', 'name')).toEqual(['o2']); });
+  
+});
